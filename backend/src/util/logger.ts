@@ -1,7 +1,7 @@
-const morgan = require('morgan');
-const rfs = require('rotating-file-stream');
-const path = require('path');
-const fs = require('fs');
+import morgan from "morgan";
+import rfs from "rotating-file-stream";
+import path from "path";
+import fs from "fs";
 
 // log directory path
 const logDirectory = path.resolve(__dirname, '../../log');
@@ -15,7 +15,7 @@ const accessLogStream = rfs('access.log', {
     path: logDirectory
 })
 
-module.exports = {
+export default {
     dev: morgan('dev'),
     combined: morgan('combined', { stream: accessLogStream })
 }

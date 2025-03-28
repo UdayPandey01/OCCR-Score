@@ -1,22 +1,24 @@
 
 
 // Patches
-const {inject, errorHandler} = require('express-custom-error');
+import { inject, errorHandler } from "express-custom-error"
 inject(); // Patch express in order to use async / await syntax
 
 // Require Dependencies
+import env from "mandatoryenv"
+import express from "express"
+import morgan from "morgan"
+import cookieParser from "cookie-parser"
+import cors from "cors"
+import helmet from "helmet"
 
-const express = require('express');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const helmet = require('helmet');
 
+import logger from "./util/logger"
 
-const logger = require('./util/logger');
 
 // Load .env Enviroment Variables to process.env
 
-require('mandatoryenv').load([
+env.load([
     'DB_HOST',
     'DB_DATABASE',
     'DB_USER',
@@ -25,10 +27,11 @@ require('mandatoryenv').load([
     'SECRET'
 ]);
 
+
 const { PORT } = process.env;
 
-
 // Instantiate an Express Application
+
 const app = express();
 
 
@@ -39,6 +42,7 @@ app.use(express.urlencoded( { extended: true, limit: '10mb' } ));
 // Configure custom logger middleware
 app.use(logger.dev, logger.combined);
 
+app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(cors());
 app.use(helmet());
@@ -50,9 +54,8 @@ app.use('*', (req, res, next) => {
 })
 
 // Assign Routes
-
-app.use('/', require('./routes/router.js'));
-
+import router from "./routes/router"
+app.use('/', router);
 
 // Handle errors
 app.use(errorHandler());
@@ -64,7 +67,8 @@ app.use('*', (req, res) => {
     .json( {status: false, message: 'Endpoint Not Found'} );
 })
 
-// Open Server on selected Port
+// Open Server on configurated Port
+
 app.listen(
     PORT,
     () => console.info('Server listening on port ', PORT)
