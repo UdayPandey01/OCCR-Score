@@ -18,7 +18,7 @@ export function useWalletActivity() {
     async function fetchActivity() {
       const transactions = await alchemy.core.getAssetTransfers({
         fromBlock: "0x0",
-        fromAddress: "0xA26148AE51fa8E787DF319C04137602Cc018b521",
+        fromAddress: "0xd4d63cb0e661df7bd54b27d8ee38013d68e8cc8f",
         category: ["external", "erc20", "erc721"],
       });
 
