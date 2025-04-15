@@ -1,13 +1,12 @@
 "use client";
-import { useCompoundRisk } from "@/hooks/useCompoundRisk";
-// import { useAaveActivity } from "@/hooks/useAaveActivity";
 import { useWalletActivity } from "@/hooks/useWalletActivity";
-import { useAccount } from "wagmi";
+import { useCompoundRisk } from "@/hooks/useCompoundRisk";
+import { useWallet } from "@/context/WalletContext";
 
-export default function Data() {
-  // const { address } = useAccount();
-  const { walletAge, transactionVolume } = useWalletActivity();
-  const {borrowedAmount} = useCompoundRisk("0xd4d63cb0e661df7bd54b27d8ee38013d68e8cc8f");
+const Data = () => {
+  const { walletAddress } = useWallet();
+  const { walletAge, transactionVolume } = useWalletActivity(walletAddress);
+  const { borrowedAmount } = useCompoundRisk(walletAddress);
 
   return (
     <div>
@@ -18,4 +17,6 @@ export default function Data() {
       <p>Borrowed Amount: {borrowedAmount} DAI</p>
     </div>
   );
-}
+};
+
+export default Data;
