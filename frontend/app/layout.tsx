@@ -3,6 +3,14 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Web3Provider } from "./providers";
 import { WalletProvider } from "@/context/WalletContext";
+import { Spline_Sans } from 'next/font/google';
+
+const splineSans = Spline_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-spline',
+});
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,7 +31,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en"  className={splineSans.variable}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >

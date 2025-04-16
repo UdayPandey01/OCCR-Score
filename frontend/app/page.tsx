@@ -1,14 +1,17 @@
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { Banner } from "./components/landingPage/Banner";
+import Footer from "./components/landingPage/footer";
 import { Hero } from "./components/landingPage/Hero";
+import ScoreContainer from "./components/landingPage/ScoreContainer";
 
 export default function Home() {
+
   return (
     <div>
-    <Banner />
-    <div className="absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
-    <Hero />
-    <ConnectButton/>
+      <ScoreContainer />
+
+      <div className="absolute top-0 z-[-2] h-screen w-screen bg-black"></div>
+      <Hero />
+
+      <Footer />
     </div>
   );
 }
