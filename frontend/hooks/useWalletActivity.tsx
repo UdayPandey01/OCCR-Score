@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alchemy, Network } from "alchemy-sdk";
+import { Alchemy, Network, AssetTransfersCategory } from "alchemy-sdk";
 
 const alchemy = new Alchemy({
   apiKey: "s0CXuwy0IO4aLKX-bSPLZO5Q704L5zYm",
@@ -9,7 +9,7 @@ const alchemy = new Alchemy({
 export function useWalletActivity(walletAddress: string | undefined) {
   const [walletAge, setWalletAge] = useState(0);
   const [transactionVolume, setTransactionVolume] = useState(0);
-  console.log("Wallet Address:", walletAddress);  
+  console.log("Wallet Address:", walletAddress);
 
   useEffect(() => {
     if (!walletAddress) return;
@@ -19,7 +19,11 @@ export function useWalletActivity(walletAddress: string | undefined) {
         const transactions = await alchemy.core.getAssetTransfers({
           fromBlock: "0x0",
           fromAddress: walletAddress,
-          category: ["external", "erc20", "erc721"],
+          category: [
+            AssetTransfersCategory.EXTERNAL,
+            AssetTransfersCategory.ERC20,
+            AssetTransfersCategory.ERC721,
+          ],
         });
 
         const totalVolume = transactions.transfers.reduce(
@@ -29,7 +33,8 @@ export function useWalletActivity(walletAddress: string | undefined) {
 
         const firstTxBlock = transactions.transfers.at(-1)?.blockNum || "0x0";
         const blockDetails = await alchemy.core.getBlock(Number(firstTxBlock));
-        const walletAgeInDays = (Date.now() / 1000 - blockDetails.timestamp) / 86400;
+        const walletAgeInDays =
+          (Date.now() / 1000 - blockDetails.timestamp) / 86400;
 
         setTransactionVolume(totalVolume);
         setWalletAge(Math.floor(walletAgeInDays));
